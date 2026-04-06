@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Danh Sách Lớp Học Phần{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+   <div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h3 class="text-info fw-bold mb-1"><i class="bi bi-list-ul me-2"></i>Danh Sách Lớp Học Phần</h3>
+        <p class="text-muted mb-0">Chọn một lớp học phần bên dưới để xếp giảng viên và thêm sinh viên vào danh sách.</p>
+    </div>
+
+    <div class="d-flex flex-column align-items-end gap-2">
+        <a href="{{ url('staff_dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại Dashboard
+        </a>
+
+        <a href="{{ url('staff_courseclass_add') }}" class="btn btn-info text-white fw-bold shadow-sm rounded-pill px-4">
+            <i class="bi bi-plus-circle-fill me-1"></i> Tạo Lớp  Mới
+        </a>
+    </div>
+</div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-info text-center align-middle text-secondary">
+                        <tr>
+                            <th>Mã Môn</th>
+                            <th>Tên Môn</th>
+                            <th>Học Kỳ</th>
+                            <th>Giảng Viên</th>
+                            <th>Phòng Học</th>
+                            <th>Lịch Học</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center align-middle">
+                    {% for c in course_classes %}
+                        <tr>
+                            <td><span class="badge bg-light text-dark border">{{ c.subject.code }}</span></td>
+                            <td class="text-start fw-bold text-primary">{{ c.subject.name }}</td>
+                            <td>{{ c.semester.name }}</td>
+                            <td>
+                                {% if c.lecturer %}
+                                    <i class="bi bi-person-video3 text-success me-1"></i> {{ c.lecturer.get_full_name() }}
+                                {% else %}
+                                    <span class="text-danger fst-italic"><i class="bi bi-exclamation-circle"></i> Chưa phân công</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ c.room }}</td>
+                            <td>{{ c.schedule }}</td>
+                            <td>
+                                <a href="{{ url('staff_manage_enrollment', kwargs={'class_id': c.id}) }}" class="btn btn-sm btn-primary shadow-sm rounded-pill px-3">
+                                    <i class="bi bi-people-fill me-1"></i> Quản lý
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-muted py-5 text-center">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 text-black-50"></i>
+                                Chưa có lớp học phần nào trong hệ thống.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

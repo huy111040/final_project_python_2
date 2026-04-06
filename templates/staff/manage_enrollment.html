@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Quản Lý Lớp Học Phần{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h3 class="text-info fw-bold mb-0"><i class="bi bi-gear-fill me-2"></i>Cấu hình Lớp: {{ course_class.subject.name }}</h3>
+        <a href="{{ url('staff_courseclass_list') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm"><i class="bi bi-arrow-left"></i> Quay lại Danh sách</a>
+    </div>
+
+    <p class="text-muted mb-4">
+        Giảng viên: <strong class="text-dark">{{ course_class.lecturer.get_full_name() if course_class.lecturer else 'Chưa có' }}</strong> | 
+        Lịch học: <strong class="text-dark">{{ course_class.schedule }}</strong>
+    </p>
+
+    <div class="row mb-4 g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white fw-bold py-3"><i class="bi bi-box-arrow-in-right me-2"></i>Thêm Nhanh Theo Lớp Sinh Hoạt</div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ get_csrf_token(request) }}">
+                        <input type="hidden" name="action" value="add_cohort">
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Chọn lớp:</label>
+                            <select name="cohort_id" class="form-select" required>
+                                <option value="">-- Chọn lớp sinh hoạt --</option>
+                                {% for c in cohorts %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Đưa toàn bộ sinh viên lớp này vào</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100 rounded-4 overflow-hidden">
+                <div class="card-header bg-success text-white fw-bold py-3"><i class="bi bi-person-plus-fill me-2"></i>Thêm Sinh Viên Học Ghép</div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ get_csrf_token(request) }}">
+                        <input type="hidden" name="action" value="add_individual">
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Chọn sinh viên:</label>
+                            <select name="student_id" class="form-select searchable-select" required>
+                                <option value="">-- Gõ tên hoặc mã SV để tìm kiếm --</option>
+                                {% for s in available_students %}<option value="{{ s.id }}">{{ s.user_code }} - {{ s.get_full_name() }}</option>{% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">Thêm sinh viên này</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-header bg-dark text-white fw-bold py-3"><i class="bi bi-list-check me-2"></i>Danh sách sinh viên hiện tại</div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0 text-center align-middle">
+                <thead class="table-light">
+                    <tr><th>Mã SV</th><th class="text-start">Họ và Tên</th><th>Lớp</th><th>Thao tác</th></tr>
+                </thead>
+                <tbody>
+                    {% for e in enrollments %}
+                    <tr>
+                        <td><span class="badge bg-light text-dark border">{{ e.student.user_code }}</span></td>
+                        <td class="text-start fw-bold">{{ e.student.get_full_name() }}</td>
+                        <td><span class="badge bg-secondary">{{ e.student.student_class.name if e.student.student_class else 'Học ghép' }}</span></td>
+                        <td>
+                            <form method="POST" class="d-inline">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ get_csrf_token(request) }}">
+                                <input type="hidden" name="action" value="remove">
+                                <input type="hidden" name="enrollment_id" value="{{ e.id }}">
+                                <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3"><i class="bi bi-trash3-fill"></i> Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="text-muted py-5"><i class="bi bi-inbox fs-2 d-block mb-2 text-black-50"></i>Lớp chưa có sinh viên.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.searchable-select').select2({
+            width: '100%',
+            theme: "default"
+        });
+    });
+</script>
+{% endblock %}
