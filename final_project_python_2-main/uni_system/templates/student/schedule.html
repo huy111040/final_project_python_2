@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Thời Khóa Biểu - Sinh Viên{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-primary fw-bold mb-1"><i class="bi bi-calendar-week me-2"></i>Thời Khóa Biểu Học Kỳ</h3>
+            <p class="text-muted mb-0">Tra cứu lịch học, giảng viên và phòng học của các môn đã đăng ký.</p>
+        </div>
+        <a href="{{ url('student_dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-primary text-center align-middle text-dark">
+                        <tr>
+                            <th>Mã Môn</th>
+                            <th>Tên Môn</th>
+                            <th>Tín Chỉ</th>
+                            <th>Giảng Viên</th>
+                            <th>Phòng Học</th>
+                            <th>Lịch Học</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center align-middle">
+                        {% for e in enrollments %}
+                        <tr>
+                            <td><span class="badge bg-light text-dark border">{{ e.course_class.subject.code }}</span></td>
+                            <td class="text-start fw-bold text-primary">{{ e.course_class.subject.name }}</td>
+                            <td>{{ e.course_class.subject.credits }}</td>
+                            <td>
+                                {% if e.course_class.lecturer %}
+                                    <i class="bi bi-person-video3 text-success me-1"></i> {{ e.course_class.lecturer.get_full_name() }}
+                                {% else %}
+                                    <span class="text-danger fst-italic"><i class="bi bi-exclamation-circle"></i> Chưa phân công</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-semibold">{{ e.course_class.room }}</td>
+                            <td class="fw-semibold text-dark"><i class="bi bi-clock me-1 text-muted"></i> {{ e.course_class.schedule }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-muted py-5 text-center">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 text-black-50"></i>
+                                Bạn chưa có lịch học trong học kỳ này.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

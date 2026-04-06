@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Chọn Lớp Nhập Điểm{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="text-success fw-bold mb-1"><i class="bi bi-card-checklist me-2"></i>Chọn Lớp Để Quản Lý Điểm</h3>
+            <p class="text-muted mb-0">Vui lòng chọn một lớp học phần bên dưới để tiến hành nhập điểm.</p>
+        </div>
+        <a href="{{ url('lecturer_dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for c in classes %}
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 rounded-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="card-title text-dark fw-bold mb-0">{{ c.subject.name }}</h5>
+                        <span class="badge bg-light text-dark border">{{ c.subject.code }}</span>
+                    </div>
+                    <p class="card-text mb-1"><i class="bi bi-bookmark text-muted me-1"></i> <strong>Học kỳ:</strong> {{ c.semester.name }}</p>
+                    <p class="card-text mb-3"><i class="bi bi-geo-alt text-muted me-1"></i> <strong>Phòng:</strong> {{ c.room }}</p>
+                    
+                    <a href="{{ url('lecturer_grade_input', kwargs={'class_id': c.id}) }}" class="btn btn-success w-100 rounded-pill fw-semibold">
+                        <i class="bi bi-pencil-square me-1"></i> Tiến hành nhập điểm
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center text-muted mt-5">
+            <i class="bi bi-inbox fs-1 d-block mb-2 text-black-50"></i>
+            <h5>Thầy/Cô chưa được phân công lớp nào trong học kỳ này.</h5>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

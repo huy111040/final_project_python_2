@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Giảng Viên{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hiệu ứng nổi lên khi di chuột (chuẩn tông Đen/Xám của Giảng viên) */
+    .menu-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .menu-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        border-color: #212529 !important; 
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <h3 class="mb-5 text-center text-dark fw-bold">Không Gian Làm Việc Của Giảng Viên</h3>
+    
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5">
+            <div class="card menu-card shadow-sm border h-100 text-center py-5 rounded-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-check text-dark" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h4 class="card-title text-dark fw-bold mb-3">Lịch Giảng Dạy</h4>
+                    <p class="card-text text-muted px-4 mb-4">Xem danh sách các lớp học phần được phân công giảng dạy.</p>
+                    <a href="{{ url('lecturer_schedule') }}" class="btn btn-outline-dark rounded-pill px-5">Xem lịch dạy</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card menu-card shadow-sm border h-100 text-center py-5 rounded-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-pencil-square text-success" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h4 class="card-title text-dark fw-bold mb-3">Quản Lý Điểm Số</h4>
+                    <p class="card-text text-muted px-4 mb-4">Nhập và cập nhật điểm chuyên cần, giữa kỳ, cuối kỳ cho sinh viên.</p>
+                    <a href="{{ url('lecturer_grade_select') }}" class="btn btn-outline-success rounded-pill px-5">Nhập điểm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

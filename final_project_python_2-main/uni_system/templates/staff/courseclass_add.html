@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Tạo Lớp Học Phần Mới{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-info fw-bold mb-0"><i class="bi bi-plus-circle-fill me-2"></i>Mở Lớp Học Phần</h3>
+                <a href="{{ url('staff_dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm"><i class="bi bi-arrow-left"></i> Quay lại</a>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ get_csrf_token(request) }}">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-secondary">Môn học</label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-secondary">Giảng viên phụ trách</label>
+                            {{ form.lecturer }}
+                            {% if form.lecturer.errors %}<div class="text-danger small mt-1">{{ form.lecturer.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary">Học kỳ</label>
+                            {{ form.semester }}
+                            {% if form.semester.errors %}<div class="text-danger small mt-1">{{ form.semester.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="row bg-light p-3 rounded-3 mb-4 border">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label class="form-label fw-semibold text-secondary">Phòng học</label>
+                                {{ form.room }}
+                            </div>
+
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label class="form-label fw-semibold text-secondary">Chọn Thứ</label>
+                                {{ form.day_of_week }}
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-secondary">Chọn Tiết (Ca học)</label>
+                                {{ form.time_slot }}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-info text-white fw-bold w-100 py-3 rounded-pill shadow-sm">
+                            <i class="bi bi-save me-1"></i> Khởi tạo lớp học
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

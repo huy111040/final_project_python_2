@@ -1,0 +1,61 @@
+admin, 12345
+sinhvien_001,abc.12345,IT001
+giangvien_01,abc.12345,GV001
+giaovu_01,abc.12345
+
+from core.models import User, StudentClass
+from django.contrib.auth.hashers import make_password
+
+# 1. Tạo 4 Lớp sinh hoạt mới
+class_a, _ = StudentClass.objects.get_or_create(name='IT24A', defaults={'major': 'Công nghệ thông tin'})
+class_b, _ = StudentClass.objects.get_or_create(name='IT24B', defaults={'major': 'Công nghệ thông tin'})
+class_c, _ = StudentClass.objects.get_or_create(name='IT24C', defaults={'major': 'Công nghệ thông tin'})
+class_d, _ = StudentClass.objects.get_or_create(name='IT24D', defaults={'major': 'Công nghệ thông tin'})
+
+# 2. Danh sách 20 sinh viên chia đều cho 4 lớp
+students_data = [
+    # Lớp IT24A
+    {'username': 'sv001', 'user_code': 'SV001', 'first_name': 'Nguyễn Văn', 'last_name': 'A', 'student_class': class_a},
+    {'username': 'sv002', 'user_code': 'SV002', 'first_name': 'Trần Thị', 'last_name': 'B', 'student_class': class_a},
+    {'username': 'sv003', 'user_code': 'SV003', 'first_name': 'Lê Văn', 'last_name': 'C', 'student_class': class_a},
+    {'username': 'sv004', 'user_code': 'SV004', 'first_name': 'Đinh Minh', 'last_name': 'Huy', 'student_class': class_a},
+    {'username': 'sv005', 'user_code': 'SV005', 'first_name': 'Hoàng Phương', 'last_name': 'Linh', 'student_class': class_a},
+
+    # Lớp IT24B
+    {'username': 'sv006', 'user_code': 'SV006', 'first_name': 'Phạm Trọng', 'last_name': 'Nghĩa', 'student_class': class_b},
+    {'username': 'sv007', 'user_code': 'SV007', 'first_name': 'Vũ Thị', 'last_name': 'Trang', 'student_class': class_b},
+    {'username': 'sv008', 'user_code': 'SV008', 'first_name': 'Bùi Quốc', 'last_name': 'Bảo', 'student_class': class_b},
+    {'username': 'sv009', 'user_code': 'SV009', 'first_name': 'Đặng Thu', 'last_name': 'Hà', 'student_class': class_b},
+    {'username': 'sv010', 'user_code': 'SV010', 'first_name': 'Ngô Tuấn', 'last_name': 'Anh', 'student_class': class_b},
+
+    # Lớp IT24C
+    {'username': 'sv011', 'user_code': 'SV011', 'first_name': 'Lý Hải', 'last_name': 'Đăng', 'student_class': class_c},
+    {'username': 'sv012', 'user_code': 'SV012', 'first_name': 'Hồ Quỳnh', 'last_name': 'Hương', 'student_class': class_c},
+    {'username': 'sv013', 'user_code': 'SV013', 'first_name': 'Trương Bích', 'last_name': 'Ngọc', 'student_class': class_c},
+    {'username': 'sv014', 'user_code': 'SV014', 'first_name': 'Phan Nhật', 'last_name': 'Nam', 'student_class': class_c},
+    {'username': 'sv015', 'user_code': 'SV015', 'first_name': 'Đỗ Tấn', 'last_name': 'Phát', 'student_class': class_c},
+
+    # Lớp IT24D
+    {'username': 'sv016', 'user_code': 'SV016', 'first_name': 'Mai Quốc', 'last_name': 'Việt', 'student_class': class_d},
+    {'username': 'sv017', 'user_code': 'SV017', 'first_name': 'Đoàn Thanh', 'last_name': 'Tâm', 'student_class': class_d},
+    {'username': 'sv018', 'user_code': 'SV018', 'first_name': 'Trịnh Gia', 'last_name': 'Bảo', 'student_class': class_d},
+    {'username': 'sv019', 'user_code': 'SV019', 'first_name': 'Lương Thúy', 'last_name': 'Vi', 'student_class': class_d},
+    {'username': 'sv020', 'user_code': 'SV020', 'first_name': 'Võ Đức', 'last_name': 'Thắng', 'student_class': class_d},
+]
+
+# 3. Chạy vòng lặp để lưu vào Database
+for data in students_data:
+    if not User.objects.filter(username=data['username']).exists():
+        User.objects.create(
+            username=data['username'],
+            user_code=data['user_code'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            role='STUDENT',
+            student_class=data['student_class'],
+            password=make_password('abc.12345')
+        )
+
+# BẤM ENTER 2 LẦN Ở ĐÂY ĐỂ VÒNG LẶP KẾT THÚC VÀ THỰC THI
+
+print("Đã thêm 4 lớp và 20 sinh viên thành công!")

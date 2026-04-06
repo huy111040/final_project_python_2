@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Sinh Viên{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hiệu ứng nổi lên khi di chuột vào thẻ (giống của Giáo vụ) */
+    .menu-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .menu-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        border-color: #0d6efd !important; /* Viền sáng lên màu xanh */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mb-5 mt-4">
+    <h3 class="mb-5 text-center text-primary fw-bold">Không Gian Học Tập</h3>
+    
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5">
+            <div class="card menu-card shadow-sm border h-100 text-center py-5 rounded-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-week text-primary" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h4 class="card-title text-dark fw-bold mb-3">Thời Khóa Biểu</h4>
+                    <p class="card-text text-muted px-4 mb-4">Xem thông tin lịch học, phòng học và giảng viên phụ trách các môn.</p>
+                    <a href="{{ url('student_schedule') }}" class="btn btn-outline-primary rounded-pill px-5">Xem lịch học</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card menu-card shadow-sm border h-100 text-center py-5 rounded-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-journal-check text-success" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h4 class="card-title text-dark fw-bold mb-3">Kết Quả Học Tập</h4>
+                    <p class="card-text text-muted px-4 mb-4">Tra cứu bảng điểm chi tiết chuyên cần, giữa kỳ và cuối kỳ.</p>
+                    <a href="{{ url('student_grades') }}" class="btn btn-outline-success rounded-pill px-5">Tra cứu điểm</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
