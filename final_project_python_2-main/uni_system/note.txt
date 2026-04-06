@@ -3,7 +3,7 @@ sinhvien_001,abc.12345,IT001
 giangvien_01,abc.12345,GV001
 giaovu_01,abc.12345
 
-from core.models import User, StudentClass
+from apps.users.models import User, StudentClass
 from django.contrib.auth.hashers import make_password
 
 # 1. Tạo 4 Lớp sinh hoạt mới
@@ -59,3 +59,14 @@ for data in students_data:
 # BẤM ENTER 2 LẦN Ở ĐÂY ĐỂ VÒNG LẶP KẾT THÚC VÀ THỰC THI
 
 print("Đã thêm 4 lớp và 20 sinh viên thành công!")
+
+# --- Sau khi tách app: nếu DB cũ đã có bảng core_* và django_migrations còn app "core",
+# xóa các dòng core trong django_migrations, rồi: python manage.py migrate --fake-initial
+
+# --- Nếu /admin/ không có dữ liệu (DB mới): chạy migrate rồi tạo mẫu:
+# python manage.py migrate
+# python manage.py seed_demo
+#
+# Nếu /admin/ báo "You don't have permission to view or edit anything": tài khoản giáo vụ
+# cần quyền từng model — chạy lại: python manage.py seed_demo
+# Hoặc đăng nhập bằng user "admin" (superuser).
